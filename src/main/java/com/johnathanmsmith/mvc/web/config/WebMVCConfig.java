@@ -12,11 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
@@ -24,14 +20,13 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 
 @Configuration
+@ComponentScan(basePackages =  "com.johnathansmith.mvc.web")
 @EnableWebMvc
-@ComponentScan(basePackages = { "com.johnathansmith.mvc.web" })
-public class WebMVCConfig extends WebMvcConfigurerAdapter {
+public class WebMVCConfig extends WebMvcConfigurationSupport {
 
 	private static final String MESSAGE_SOURCE = "/WEB-INF/classes/messages";
 
-	private static final Logger logger = LoggerFactory
-			.getLogger(WebMVCConfig.class);
+	private static final Logger logger = LoggerFactory.getLogger(WebMVCConfig.class);
 
 	/**
 	 * @return the view resolver
@@ -66,17 +61,12 @@ public class WebMVCConfig extends WebMvcConfigurerAdapter {
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		logger.debug("setting up resource handlers");
-		registry.addResourceHandler("/resources/").addResourceLocations(
-				"/resources/**");
+		registry.addResourceHandler("/resources/").addResourceLocations("/resources/**");
 	}
 
 	@Override
-	public void configureDefaultServletHandling(
-			DefaultServletHandlerConfigurer configurer) {
+	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
 		logger.debug("configureDefaultServletHandling");
-		// if the spring dispatcher is mapped to / then forward non handled
-		// requests
-		// (e.g. static resource) to the container's "default servlet"
 		configurer.enable();
 	}
 
@@ -96,5 +86,4 @@ public class WebMVCConfig extends WebMvcConfigurerAdapter {
 		b.setExceptionMappings(mappings);
 		return b;
 	}
-
 }

@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class IndexController {
+class IndexController {
 
 	private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
 
-	@RequestMapping(value = "/")
+	@RequestMapping(value = "/out")
 	public ModelAndView indexPage() {
 		logger.debug("IndexController");
 
