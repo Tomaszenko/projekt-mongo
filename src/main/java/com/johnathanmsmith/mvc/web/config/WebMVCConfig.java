@@ -20,7 +20,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 
 @Configuration
-@ComponentScan(basePackages =  "com.johnathansmith.mvc.web")
+@ComponentScan(basePackages =  {"com.johnathanmsmith.mvc.web"})
 @EnableWebMvc
 public class WebMVCConfig extends WebMvcConfigurationSupport {
 

@@ -1,6 +1,6 @@
 <html>
 <body>
 <h2>Hello World!</h2>
-    Not from controller.
+    This is a Example of Spring MVC using JavaConfig and Not XML Files..
 </body>
 </html>
