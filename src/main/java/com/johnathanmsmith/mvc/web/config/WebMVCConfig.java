@@ -23,6 +23,7 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 @Configuration
 @EnableWebMvc
+@ComponentScan(basePackages= {"com.johnathanmsmith.mvc.web"})
 public class WebMVCConfig extends WebMvcConfigurerAdapter {
 
 	private static final String MESSAGE_SOURCE = "/WEB-INF/classes/messages";
