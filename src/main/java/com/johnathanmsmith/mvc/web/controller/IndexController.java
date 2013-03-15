@@ -14,6 +14,7 @@ class IndexController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String displayRequestPage() {
+        logger.debug("made it to controller");
         return "index";
 
     }

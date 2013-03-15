@@ -17,29 +17,27 @@ import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.JstlView;
+import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 
 @Configuration
-@ComponentScan(basePackages =  {"com.johnathanmsmith.mvc.web"})
 @EnableWebMvc
-public class WebMVCConfig extends WebMvcConfigurationSupport {
+public class WebMVCConfig extends WebMvcConfigurerAdapter {
 
 	private static final String MESSAGE_SOURCE = "/WEB-INF/classes/messages";
 
 	private static final Logger logger = LoggerFactory.getLogger(WebMVCConfig.class);
 
-	/**
-	 * @return the view resolver
-	 */
 	@Bean
-	public ViewResolver viewResolver() {
-		logger.debug("setting up view resolver");
+    public  ViewResolver resolver() {
+        UrlBasedViewResolver url = new UrlBasedViewResolver();
+        url.setPrefix("views/");
+        url.setViewClass(JstlView.class);
+        url.setSuffix(".jsp");
+        return url;
+    }
 
-		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-		viewResolver.setPrefix("/WEB-INF/views/");
-		viewResolver.setSuffix(".jsp");
-		return viewResolver;
-	}
 
 	@Bean(name = "messageSource")
 	public MessageSource configureMessageSource() {
