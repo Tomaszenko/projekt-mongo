@@ -1,10 +1,10 @@
-package com.johnathanmsmith.mvc.web.config;
+package com.example.config;
 
 import java.util.Locale;
 import java.util.Properties;
+import java.util.logging.Logger;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -19,30 +19,54 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.spring4.view.ThymeleafViewResolver;
+import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
+import javax.servlet.ServletContext;
 
+@ComponentScan(basePackages= {"com.example"})
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages= {"com.johnathanmsmith.mvc.web"})
 public class WebMVCConfig extends WebMvcConfigurerAdapter {
 
 	private static final String MESSAGE_SOURCE = "/WEB-INF/classes/messages";
 
-	private static final Logger logger = LoggerFactory.getLogger(WebMVCConfig.class);
+	@Autowired
+	ServletContext servletContext;
+
+//	private static final Logger logger = LoggerFactory.getLogger(WebMVCConfig.class);
+
+	@Bean
+	public ServletContextTemplateResolver templateResolver() {
+		ServletContextTemplateResolver resolver = new ServletContextTemplateResolver(servletContext);
+        resolver.setPrefix("/WEB-INF/views/");
+        resolver.setSuffix(".html");
+        resolver.setTemplateMode("HTML5");
+        return resolver;
+	}
+
+	@Bean
+	public TemplateEngine templateEngine() {
+		TemplateEngine templateEngine = new TemplateEngine();
+		templateEngine.setTemplateResolver(templateResolver());
+		return templateEngine;
+	}
 
 	@Bean
     public  ViewResolver resolver() {
         UrlBasedViewResolver url = new UrlBasedViewResolver();
-        url.setPrefix("views/");
-        url.setViewClass(JstlView.class);
+        url.setViewClass(ThymeleafViewResolver.class);
+        url.setPrefix("/WEB-INF/views/");
         url.setSuffix(".jsp");
+        System.out.println("KABUM");
         return url;
     }
 
 
 	@Bean(name = "messageSource")
 	public MessageSource configureMessageSource() {
-		logger.debug("setting up message source");
+//		logger.debug("setting up message source");
 		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
 		messageSource.setBasename(MESSAGE_SOURCE);
 		messageSource.setCacheSeconds(5);
@@ -59,13 +83,13 @@ public class WebMVCConfig extends WebMvcConfigurerAdapter {
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		logger.debug("setting up resource handlers");
+//		logger.debug("setting up resource handlers");
 		registry.addResourceHandler("/resources/").addResourceLocations("/resources/**");
 	}
 
 	@Override
 	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-		logger.debug("configureDefaultServletHandling");
+//		logger.debug("configureDefaultServletHandling");
 		configurer.enable();
 	}
 
