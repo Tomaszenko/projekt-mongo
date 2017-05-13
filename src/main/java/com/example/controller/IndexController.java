@@ -23,13 +23,12 @@ class IndexController {
 //	private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
 
     @RequestMapping(value="/{name:[A-z]+}/**", method=RequestMethod.GET)
-    public ModelAndView displayRequestPage(@PathVariable("name") String userName, Model model) {
+    public String displayRequestPage(@PathVariable("name") String userName, Model model) {
 //        logger.debug("made it to controller");
         User user = new User();
         user.setName(userName);
         repo.insert(user);
-        model.addAttribute("user", userName);
-        return new ModelAndView("index", "user", userName);
-//        return "index";
+//        model.addAttribute("user", userName);
+        return "index";
     }
 }

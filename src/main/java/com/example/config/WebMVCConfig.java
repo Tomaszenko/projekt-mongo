@@ -54,14 +54,12 @@ public class WebMVCConfig extends WebMvcConfigurerAdapter {
 	}
 
 	@Bean
-    public  ViewResolver resolver() {
-        UrlBasedViewResolver url = new UrlBasedViewResolver();
-        url.setViewClass(ThymeleafViewResolver.class);
-        url.setPrefix("/WEB-INF/views/");
-        url.setSuffix(".jsp");
+    public ThymeleafViewResolver resolver() {
+		ThymeleafViewResolver resolver = new ThymeleafViewResolver();
+		resolver.setTemplateEngine(templateEngine());
+		resolver.setOrder(1);
         System.out.println("KABUM");
-        return url;
-    }
+        return resolver;    }
 
 
 	@Bean(name = "messageSource")
