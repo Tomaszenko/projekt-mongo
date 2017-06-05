@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Blog</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/blog-home.css" rel="stylesheet">
+	
+	    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+  <!-- Page Content -->
+    <div class="container">
+	
+        <div class="row">
+
+            <div class="col-md-9">
+				<div style="height: 20px;"></div>
+				<img class="img-responsive" src="/static/images/logo.png" style="float: left;" alt="">
+				<div style="height: 150px;"></div>
+			</div>
+			
+			<!-- Szczegóły wpisu -->
+            <div class="col-md-9">
+
+                <hr>
+				
+				
+				<div class="col-md-12" style="padding:3px; font-weight: bold;">
+				
+				<span class="wpcf7-form-control-wrap Attachments">
+					<label style="float: left;" for="Attachments">Zdjęcie: &nbsp;&nbsp;&nbsp;&nbsp;</label>
+					<input type="file" name="Attachments" size="40" class="wpcf7-form-control wpcf7-file" aria-invalid="false" multiple="1">
+				</span>
+				
+				<div style="height: 25px;"></div>
+					
+					<label for="title">Tytuł wpisu:&nbsp;&nbsp;</label>
+					<input type="text" style="width: 100%" name="title" required>
+					
+				<div style="height: 25px;"></div>
+					
+					<label for="content">Wpis:&nbsp;&nbsp;</label>
+					<textarea type="text" style="max-width: 100%; width: 100%; min-height: 100px;" name="content" required></textarea>
+					
+				<div style="height: 25px;"></div>
+				
+					<label for="category">Kategoria:&nbsp;&nbsp;</label>
+					
+					<select style="width: 100%; height: 25px;">
+						<option value="sport">Sport</option>
+						<option value="it">IT</option>
+						<option value="gry">Gry</option>
+						<option value="muzyka">Muzyka</option>
+						<option value="podroze">Podróże</option>
+						<option value="filmy">Filmy</option>
+						<option value="ksiazki">Książki</option>						
+						<option value="inne">Inne</option>
+					</select>
+					
+				<div style="height: 30px;"></div>
+				
+				<center>
+				<input type="submit" value=" Zapisz ">&nbsp;&nbsp;
+				<input type="reset" value=" Anuluj ">
+				</center>
+				
+				</div>
+
+				<div style="height: 10px;"></div>
+					
+			
+
+
+            </div>
+
+							
+            <!-- Blog Sidebar Widgets Column -->
+            <div class="col-md-3">
+				
+				<!-- Blog Search Well -->
+                <div class="well">
+                    <h4>Szukaj</h4>
+                    <div class="input-group">
+                        <input type="text" class="form-control">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">
+                                <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                        </span>
+                    </div>
+                    <!-- /.input-group -->
+                </div>
+
+
+
+            </div>
+
+        </div>
+        <!-- /.row -->
+
+        <!-- Footer -->
+        <footer>
+		
+			<hr>
+				
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; Ewelina Ruchlewicz 2017</p>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+</body>
+
+</html>

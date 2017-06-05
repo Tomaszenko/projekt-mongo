@@ -1,28 +1,22 @@
-package com.example.models;
+package com.example.dto;
 
 import org.hibernate.validator.constraints.Email;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 
 /**
- * Created by Tomek on 09.05.2017.
+ * Created by Tomek on 04.06.2017.
  */
+public class UserDTO {
 
-@Document(collection = "users")
-public class User {
-    @Id
-    private String id;
-
-    @NotNull(message = "Imię jest wymagane")
+    @NotNull(message = "First name is required")
     @Size(min = 1)
     private String first_name;
 
-    @NotNull(message = "Nazwisko jest wymagane")
+    @NotNull(message = "Last name is required")
     @Size(min = 1)
     private String last_name;
 
@@ -31,7 +25,7 @@ public class User {
 
     private ArrayList<String> hobbies;
 
-//    private String imgPath;
+//    private MultipartFile image;
 
     @Email
     private String contact;
@@ -68,12 +62,12 @@ public class User {
         this.hobbies = hobbies;
     }
 
-//    public String getImgPath() {
-//        return imgPath;
+//    public MultipartFile getImage() {
+//        return image;
 //    }
 //
-//    public void setImgPath(String imgPath) {
-//        this.imgPath = imgPath;
+//    public void setImage(MultipartFile image) {
+//        this.image = image;
 //    }
 
     public String getContact() {

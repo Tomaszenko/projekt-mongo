@@ -1,7 +1,9 @@
 package com.example.config;
 
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Properties;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
@@ -20,7 +24,9 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.dialect.IDialect;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
+import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import javax.servlet.ServletContext;
@@ -37,12 +43,14 @@ public class WebMVCConfig extends WebMvcConfigurerAdapter {
 
 //	private static final Logger logger = LoggerFactory.getLogger(WebMVCConfig.class);
 
+
 	@Bean
 	public ServletContextTemplateResolver templateResolver() {
 		ServletContextTemplateResolver resolver = new ServletContextTemplateResolver(servletContext);
         resolver.setPrefix("/WEB-INF/views/");
         resolver.setSuffix(".html");
-        resolver.setTemplateMode("HTML5");
+        resolver.setTemplateMode(TemplateMode.HTML);
+        resolver.setCharacterEncoding("utf8");
         return resolver;
 	}
 
@@ -58,8 +66,10 @@ public class WebMVCConfig extends WebMvcConfigurerAdapter {
 		ThymeleafViewResolver resolver = new ThymeleafViewResolver();
 		resolver.setTemplateEngine(templateEngine());
 		resolver.setOrder(1);
+		resolver.setCharacterEncoding("utf8");
         System.out.println("KABUM");
-        return resolver;    }
+        return resolver;
+	}
 
 
 	@Bean(name = "messageSource")
@@ -82,7 +92,7 @@ public class WebMVCConfig extends WebMvcConfigurerAdapter {
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 //		logger.debug("setting up resource handlers");
-		registry.addResourceHandler("/resources/").addResourceLocations("/resources/**");
+		registry.addResourceHandler("/static/").addResourceLocations("/resources/**");
 	}
 
 	@Override
@@ -106,5 +116,12 @@ public class WebMVCConfig extends WebMvcConfigurerAdapter {
 		mappings.put("org.springframework.transaction.TransactionException", "dataAccessFailure");
 		b.setExceptionMappings(mappings);
 		return b;
+	}
+
+	@Bean
+	public CommonsMultipartResolver multipartResolver() {
+		CommonsMultipartResolver resolver=new CommonsMultipartResolver();
+		resolver.setDefaultEncoding("utf-8");
+		return resolver;
 	}
 }
