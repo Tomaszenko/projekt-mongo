@@ -11,6 +11,8 @@ import com.example.services.UserService;
 import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -47,7 +49,7 @@ import java.util.TimeZone;
 @PropertySource( value={"classpath:hobbies.properties"})
 public class AdminController {
 
-    private static final String pattern = "MM-dd-yyyy HH:mm";
+    private static final String pattern = "dd-MM-yyyy HH:mm";
 
     @Autowired
     private Environment environment;
@@ -121,6 +123,67 @@ public class AdminController {
             return new ModelAndView("redirect:/admin");
         }
     }
+
+    @RequestMapping(value="/edit/{id}", method = RequestMethod.GET)
+    public ModelAndView editEntry(@PathVariable("id") String id, HttpServletRequest request) {
+        if(request.getSession(false)==null)
+            return new ModelAndView("redirect:/login");
+        else {
+            System.out.println("edycja");
+            Entry entry = entryService.findEntry(id);
+            ShowEntryDTO entryDTO = new ShowEntryDTO();
+            entryDTO.setId(entry.getId());
+            entryDTO.setTitle(entry.getTitle());
+            entryDTO.setText(entry.getText());
+            entryDTO.setCommentaries(entry.getCommentaries());
+            entryDTO.setDateTime(entry.getDateTime().toString(pattern));
+            entryDTO.setTags(entry.getTags());
+
+            ArrayList<String> possibleTags = new ArrayList<>();
+            possibleTags.add("historia");
+            possibleTags.add("polityka");
+            possibleTags.add("kulinaria");
+            possibleTags.add("sport");
+
+            ModelAndView mav = new ModelAndView();
+            mav.setViewName("edit");
+            mav.addObject("dto",entryDTO);
+            mav.addObject("possibleTags", possibleTags);
+            return mav;
+        }
+    }
+
+    @RequestMapping(value="/edit/{id}", method = RequestMethod.POST)
+    public ModelAndView confirmEditEntry(@PathVariable("id") String id, @ModelAttribute("dto") @Valid ShowEntryDTO dto, BindingResult bindingResult, HttpServletRequest request) {
+        if(request.getSession(false)==null)
+            return new ModelAndView("redirect:/login");
+        else {
+            if(bindingResult.hasErrors()) {
+                ModelAndView toReturn = new ModelAndView();
+                System.out.println("NIE PRZESZLO WALIDACJI");
+                System.out.println(dto.getDateTime());
+                System.out.println(dto.getId());
+                System.out.println(dto.getCommentaries());
+                toReturn.setViewName("edit");
+                toReturn.addObject("dto", dto);
+                return toReturn;
+            }
+            System.out.println("edycja");
+            Entry entry = new Entry();
+            entry.setTitle(dto.getTitle());
+            entry.setText(dto.getText());
+            entry.setCommentaries(dto.getCommentaries());
+            entry.setTags(dto.getTags());
+            DateTimeFormatter formatter = DateTimeFormat.forPattern(pattern);
+            DateTime dt = formatter.parseDateTime(dto.getDateTime());
+            entry.setDateTime(dt);
+
+            entryService.editEntry(id, entry);
+
+            return new ModelAndView("redirect:/admin");
+        }
+    }
+
 
     @RequestMapping(value="/new", method = RequestMethod.GET)
     public ModelAndView addEntry(HttpServletRequest request) {

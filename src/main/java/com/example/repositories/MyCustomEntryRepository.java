@@ -7,4 +7,5 @@ import com.example.models.Entry;
  */
 public interface MyCustomEntryRepository {
     void insertEntry(Entry entry);
+    void editEntry(String entryId, Entry entry);
 }

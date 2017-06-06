@@ -18,8 +18,12 @@ public class EntryServiceImpl implements EntryService {
     @Autowired
     EntryRepository entryRepository;
 
-    public void insertEntry(Entry entry) {
-        entryRepository.insertEntry(entry);
+    public void insertEntry(Entry entry) { entryRepository.insertEntry(entry); }
+
+    public void editEntry(String entryId, Entry entry) { entryRepository.editEntry(entryId, entry); }
+
+    public Entry findEntry(String entryId) {
+        return entryRepository.findOne(entryId);
     }
 
     public ArrayList<Entry> findEntries() {

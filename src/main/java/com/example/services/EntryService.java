@@ -10,5 +10,7 @@ import java.util.ArrayList;
 public interface EntryService {
     void insertEntry(Entry entry);
     ArrayList<Entry> findEntries();
+    Entry findEntry(String entryId);
+    void editEntry(String entryId, Entry entry);
     void deleteEntry(String entryId);
 }
