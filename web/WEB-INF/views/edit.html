@@ -48,11 +48,11 @@
 
         <!-- Szczegóły wpisu -->
         <div class="col-md-9">
-
             <a class="btn btn-primary" style="float: right;" href="/admin/logout">Wyloguj</a>
+            <a class="btn btn-primary" style="float: right; margin-right: 5px;" href="/admin/">Wróć</a>
             <br/>
-            <hr>
 
+            <hr>
             <form th:action="@{/admin/edit/{id}(id=*{id})}" th:object="${dto}" th:method="post">
 
                     <input type="hidden" name="id" th:value="*{id}" th:field="*{id}"/>
@@ -88,7 +88,6 @@
                 <div style="height: 20px;"></div>
 
                 <input type="submit" value=" Zapisz ">&nbsp;&nbsp;
-                <input type="reset" value=" Anuluj ">
 
                 <div style="height: 10px;"></div>
 
