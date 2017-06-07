@@ -73,7 +73,8 @@ public class AdminController {
                 ShowEntryDTO entryDTO = new ShowEntryDTO();
                 entryDTO.setId(entry.getId());
                 entryDTO.setTitle(entry.getTitle());
-                entryDTO.setText(entry.getText().substring(0,Math.min(entry.getText().length(), 120))+"...");
+                entryDTO.setShorterText(entry.getText().substring(0,Math.min(entry.getText().length(), 120))+"...");
+                entryDTO.setText(entry.getText());
                 entryDTO.setCommentaries(entry.getCommentaries());
                 entryDTO.setDateTime(entry.getDateTime().toString(pattern));
                 entryDTO.setTags(entry.getTags());

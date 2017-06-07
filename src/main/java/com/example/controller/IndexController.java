@@ -26,7 +26,7 @@ import java.util.ArrayList;
 @RequestMapping("/")
 class IndexController {
 
-    private static final String pattern = "MM-dd-yyyy HH:mm";
+    private static final String pattern = "dd-MM-yyyy HH:mm";
 
 //	private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
 
@@ -52,7 +52,8 @@ class IndexController {
             System.out.println(entryDTO.getText());
             entryDTO.setId(entry.getId());
             entryDTO.setTitle(entry.getTitle());
-            entryDTO.setText(entry.getText().substring(0,Math.min(entry.getText().length(),120))+"...");
+            entryDTO.setShorterText(entry.getText().substring(0,Math.min(entry.getText().length(),120))+"...");
+            entryDTO.setText(entry.getText());
             entryDTO.setDateTime(entry.getDateTime().toString(pattern));
             entryDTO.setTags(entry.getTags());
             entryDTO.setCommentaries(entry.getCommentaries());

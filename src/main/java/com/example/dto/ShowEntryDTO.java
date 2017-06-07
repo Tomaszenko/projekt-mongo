@@ -12,6 +12,7 @@ public class ShowEntryDTO {
     private String id;
     private String title;
     private String text;
+    private String shorterText;
     private ArrayList<String> tags;
     private ArrayList<Commentary> commentaries;
     private String dateTime;
@@ -34,6 +35,14 @@ public class ShowEntryDTO {
 
     public String getText() {
         return text;
+    }
+
+    public String getShorterText() {
+        return shorterText;
+    }
+
+    public void setShorterText(String shorterText) {
+        this.shorterText = shorterText;
     }
 
     public void setText(String text) {
