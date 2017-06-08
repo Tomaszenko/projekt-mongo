@@ -1,7 +1,9 @@
 package com.example.services;
 
+import com.example.models.Commentary;
 import com.example.models.Entry;
 import com.example.repositories.EntryRepository;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,10 +29,20 @@ public class EntryServiceImpl implements EntryService {
     }
 
     public ArrayList<Entry> findEntries() {
-        return new ArrayList<>(entryRepository.findAll());
+        return entryRepository.findEntriesFromNewest();
     }
 
     public void deleteEntry(String entryId) {
         entryRepository.delete(entryId);
     }
+
+    @Override
+    public ArrayList<Commentary> getCommentariesToEntry(String entryId) {
+        return entryRepository.getCommentariesToEntry(entryId);
+    }
+
+    public DateTime getDateTimeToEntry(String entryId) {
+        return entryRepository.getDateTimeToEntry(entryId);
+    }
+
 }

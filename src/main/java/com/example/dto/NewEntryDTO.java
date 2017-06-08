@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class NewEntryDTO {
     private String title;
     private String text;
-    private ArrayList<String> tags;
+    private String category;
 
     public String getTitle() {
         return title;
@@ -26,11 +26,11 @@ public class NewEntryDTO {
         this.text = text;
     }
 
-    public ArrayList<String> getTags() {
-        return tags;
+    public String getCategory() {
+        return category;
     }
 
-    public void setTags(ArrayList<String> tags) {
-        this.tags = tags;
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

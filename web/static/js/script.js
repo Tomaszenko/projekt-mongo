@@ -1,12 +1,49 @@
-/**
- * Created by Tomek on 05.06.2017.
- */
+$(function(){
+    let state = 0;
+    $('.switcher').each().on('click', function(){
+        event.preventDefault();
+        if(state===0) {
+            $(this).siblings('.intro')[0].css('display', 'none');
+            $(this).siblings('.full')[0].css('display', 'block');
+        } else {
+            $(this).siblings('.intro')[0].css('display', 'block');
+            $(this).siblings('.full')[0].css('display', 'none');
+        }
+        state = (state+1)%2;
+        console.log(state);
+    });
+    /// / searchViaAjax();})
 
-$(".search-field").find("input").live( "keydown", function (evt) {
-    var stroke;
-    stroke = (_ref = evt.which) != null ? _ref : evt.keyCode;
-    if (stroke == 9) { // 9 = tab key
-        $('#tags').append('<option value="' + $(this).val() + '" selected="selected">' + $(this).val() + '</option>');
-        $('#tags').trigger('chosen:updated');
-    }
 });
+
+// function searchViaAjax() {
+//
+//     alert("kukulele");
+//     console.log("kukulele");
+//
+//     let search = {};
+//     search["username"] = "tomko";
+//     search["email"] = "tomko@mail.pl";
+//
+//     $.ajax({
+//         type : "POST",
+//         contentType : "application/json",
+//         url : "http://localhost:8080/rest/entries",
+//         data : JSON.stringify(search),
+//         dataType : 'json',
+//         timeout : 100000,
+//         success : function(data) {
+//             console.log("SUCCESS: ", data);
+//             // display(data);
+//         },
+//         error : function(e) {
+//             console.log("ERROR: ", e);
+//             // display(e);
+//         },
+//         done : function(e) {
+//             console.log("DONE");
+//             // enableSearchButton(true);
+//         }
+//     });
+//
+// }

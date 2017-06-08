@@ -15,12 +15,18 @@
 
     <!-- Custom CSS -->
     <link href="/static/css/blog-home.css" rel="stylesheet">
-	
+
+	<link href="/static/css/jquery.tag-editor.css" rel="stylesheet">
+
 	<!-- jQuery -->
     <script src="/static/js/jquery.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="/static/js/bootstrap.min.js"></script>
+
+	<script src="/static/js/startedit.js"></script>
+
+	<script src="/static/js/jquery.tag-editor.min.js"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -36,22 +42,53 @@
   <!-- Page Content -->
     <div class="container">
 		<a href="/admin/logout">Wyloguj</a>
+        <!--<div></div>-->
 
-		<form action="#" th:action="@{/admin}" th:object="${dto}" method="post" enctype="multipart/form-data">
-			<input placeholder="First name" type="text" th:field="*{first_name}"/><br/>
-			<input placeholder="Last name" type="text" th:field="*{last_name}"/><br/>
-			<input placeholder="About me" type="text" th:field="*{description}"/><br/>
-			Hobby:<br/>
-			<th:block th:each="item : ${hobbiesList}">
-				<td th:text="${item}"></td>
-				<input type="checkbox" name="hobbies" th:value="|${item}|" th:field="*{hobbies}" /><br/>
-			</th:block>
-			<!--Plik ze zdjęciem:<input type="file" accept="image/*" th:field="*{image}"/><br/>-->
-			<input placeholder="Kontakt" type="text" th:field="*{contact}"/><br/>
-			<input type="submit" value="Zatwierdź">
-		</form>
-	
-        <div class="row">
+		<!--<form action="#" th:action="@{/admin}" th:object="${dto}" method="post" enctype="multipart/form-data">-->
+			<!--<input placeholder="First name" type="text" th:field="*{first_name}"/><br/>-->
+			<!--<input placeholder="Last name" type="text" th:field="*{last_name}"/><br/>-->
+			<!--<input placeholder="About me" type="text" th:field="*{description}"/><br/>-->
+			<!--Hobby:<br/>-->
+			<!--<th:block th:each="item : ${hobbiesList}">-->
+				<!--<td th:text="${item}"></td>-->
+				<!--<input type="checkbox" name="hobbies" th:value="|${item}|" th:field="*{hobbies}" /><br/>-->
+			<!--</th:block>-->
+			<!--&lt;!&ndash;Plik ze zdjęciem:<input type="file" accept="image/*" th:field="*{image}"/><br/>&ndash;&gt;-->
+			<!--<input placeholder="Kontakt" type="text" th:field="*{contact}"/><br/>-->
+			<!--<input type="submit" value="Zatwierdź">-->
+		<!--</form>-->
+
+
+		<!--<div id="selected-entry" class="col-md-12" style="display: none">-->
+			<!--<h3 class="jumbotron">Edytowany wpis</h3>-->
+			<!--<div class="col-md-8" style="padding:3px; font-weight: bold;">-->
+				<!--<input class="form-control" id="new-title" placeholder="Tytuł" type="text"/>-->
+				<!--<input class="form-control" id="new-text" placeholder="Tekst" type="text"/>-->
+				<!--<textarea class="form-control" id="new-tags">-->
+				<!--</textarea><br/>-->
+				<!--&lt;!&ndash;<input id="new-tag" placeholder="Nowy tag" type="text"/>&ndash;&gt;-->
+				<!--&lt;!&ndash;<button id="add-tag">Dodaj tag</button>&ndash;&gt;-->
+				<!--<h4 id="existing-date-time"></h4>-->
+				<!--<ul id="existing-commentaries">-->
+				<!--</ul>-->
+				<!--<button id="confirm-edit">Zatwierdź edycję posta</button>-->
+			<!--</div>-->
+		<!--</div>-->
+		<!--<div id="new-entry" class="col-md-12" style="display: none">-->
+			<!--<h3 class="jumbotron">Dodawany wpis</h3>-->
+			<!--<div class="col-md-8" style="padding:3px; font-weight: bold;">-->
+				<!--<input class="form-control" id="new-title-new" placeholder="Tytuł" type="text"/>-->
+				<!--<input class="form-control" id="new-text-new" placeholder="Tekst" type="text"/>-->
+				<!--<textarea class="form-control" id="new-tags-new">-->
+                <!--</textarea><br/>-->
+				<!--&lt;!&ndash;<input class="form-control" id="new-tag-new" placeholder="Nowy tag" type="text"/>&ndash;&gt;-->
+				<!--&lt;!&ndash;<button id="add-tag-new">Dodaj tag</button>&ndash;&gt;-->
+				<!--<button id="confirm-add">Zatwierdź dodawanie posta</button>-->
+			<!--</div>-->
+		<!--</div>-->
+
+
+		<div class="row">
 
             <div class="col-md-9">
 				<div style="height: 20px;"></div>
@@ -63,73 +100,91 @@
             <div class="col-md-9">
 
                 <hr>
-				<a th:href="@{/admin/new}"> &nbsp;Dodaj nowy wpis&nbsp; <span class="glyphicon"></span></a>
+                <a th:href="@{/admin/new}"> &nbsp;Dodaj wpis&nbsp; <span class="glyphicon"></span></a>
+				<!--<button id="do-add">Dodaj post</button>-->
+
+				<!--<a th:href="@{/admin/new}"> &nbsp;Dodaj nowy wpis&nbsp; <span class="glyphicon"></span></a>-->
 				<div style="height: 20px;"></div>
-				
+
+
 				
 			<!-- To można wypisywać w pętli w zależności od ilości postów -->
 				<!-- {% for wpis in wpisy %}-->
-				<div th:each="entry: ${entries}" style="min-height: 40px; height: auto; border: 1px solid silver; text-align: left; padding: 6px;">
-					<div class="col-md-8" style="padding:3px; font-weight: bold;">
-						<h4 th:text="${entry.title}"></h4>
-					</div>
-					<div class="col-md-4">
-						<a th:href="@{/admin/delete/{id}(id=${entry.getId()})}"> &nbsp;Usuń&nbsp; <span class="glyphicon"></span></a>
-						<a th:href="@{/admin/edit/{id}(id=${entry.getId()})}"> &nbsp;Szczegóły&nbsp; <span class="glyphicon"></span></a>
-					</div>
-					<div style="height: 10px;"></div>
-				</div>
+                <table>
+                    <thead>
+                        <tr class="row" style="min-height: 40px; height: auto; border: 1px solid silver; text-align: left">
+                            <th class="col-md-4">Tytul</th>
+                            <th class="col-md-4">Data modyfikacji</th>
+                            <th class="col-md-4">Opcje</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="entry: ${entries}" class="row" style="min-height: 40px; height: auto; border: 1px solid silver; text-align: left">
+                            <!--<div id="entries-div" style="min-height: 40px; height: auto; border: 1px solid silver; text-align: left;">-->
+                                <td class="col-md-4" style="font-weight: bold;">
+                                    <h4 th:text="${entry.title}"></h4>
+                                </td>
+                                <td class="col-md-4" style="font-weight: bold">
+                                    <h4 th:text="${entry.dateTime}"></h4>
+                                </td>
+                                <td class="col-md-4" style="font-weight: bold">
+                                    <a th:href="@{/admin/delete/{id}(id=${entry.getId()})}"> &nbsp;Usuń&nbsp; <span class="glyphicon"></span></a>
+                                    <a th:href="@{/admin/edit/{id}(id=${entry.getId()})}"> &nbsp;Szczegóły&nbsp; <span class="glyphicon"></span></a>
+                                </td>
+                        </tr>
+                    </tbody>
+                </table>
 				<!--{% endfor %}-->
 
 				
 <!-- To można usunąć -->
-				<div style="min-height: 40px; height: auto; border: 1px solid silver; text-align: left; padding: 6px;">
-					<div class="col-md-8" style="padding:3px; font-weight: bold;">
-						Tytuł drugiego posta
-					</div>
-					<div class="col-md-4">
-						<button> &nbsp;Usuń&nbsp; <span class="glyphicon"></span></button>
-						<button> &nbsp;Szczegóły&nbsp; <span class="glyphicon"></span></button>
-					</div>
-					<div style="height: 10px;"></div>
-				</div>
-				
-				<div style="min-height: 40px; height: auto; border: 1px solid silver; text-align: left; padding: 6px;">
-					<div class="col-md-8" style="padding:3px; font-weight: bold;">
-						Tytuł trzeciego posta
-					</div>
-					<div class="col-md-4">
-						<button> &nbsp;Usuń&nbsp; <span class="glyphicon"></span></button>
-						<button> &nbsp;Szczegóły&nbsp; <span class="glyphicon"></span></button>
-					</div>
-					<div style="height: 10px;"></div>
-				</div>
+				<!--<div style="min-height: 40px; height: auto; border: 1px solid silver; text-align: left; padding: 6px;">-->
+					<!--<div class="col-md-8" style="padding:3px; font-weight: bold;">-->
+						<!--Tytuł drugiego posta-->
+					<!--</div>-->
+					<!--<div class="col-md-4">-->
+						<!--<button> &nbsp;Usuń&nbsp; <span class="glyphicon"></span></button>-->
+						<!--<button> &nbsp;Szczegóły&nbsp; <span class="glyphicon"></span></button>-->
+					<!--</div>-->
+					<!--<div style="height: 10px;"></div>-->
+				<!--</div>-->
+				<!---->
+				<!--<div style="min-height: 40px; height: auto; border: 1px solid silver; text-align: left; padding: 6px;">-->
+					<!--<div class="col-md-8" style="padding:3px; font-weight: bold;">-->
+						<!--Tytuł trzeciego posta-->
+					<!--</div>-->
+					<!--<div class="col-md-4">-->
+						<!--<button> &nbsp;Usuń&nbsp; <span class="glyphicon"></span></button>-->
+						<!--<button> &nbsp;Szczegóły&nbsp; <span class="glyphicon"></span></button>-->
+					<!--</div>-->
+					<!--<div style="height: 10px;"></div>-->
+				<!--</div>-->
 
-				<div style="min-height: 40px; height: auto; border: 1px solid silver; text-align: left; padding: 6px;">
-					<div class="col-md-8" style="padding:3px; font-weight: bold;">
-						Tytuł czwartego posta
-					</div>
-					<div class="col-md-4">
-						<button> &nbsp;Usuń&nbsp; <span class="glyphicon"></span></button>
-						<button> &nbsp;Szczegóły&nbsp; <span class="glyphicon"></span></button>
-					</div>
-					<div style="height: 10px;"></div>
-				</div>
-				
-				<div style="min-height: 40px; height: auto; border: 1px solid silver; text-align: left; padding: 6px;">
-					<div class="col-md-8" style="padding:3px; font-weight: bold;">
-						Tytuł piątego posta
-					</div>
-					<div class="col-md-4">
-						<button> &nbsp;Usuń&nbsp; <span class="glyphicon"></span></button>
-						<button> &nbsp;Szczegóły&nbsp; <span class="glyphicon"></span></button>
-					</div>
-					<div style="height: 10px;"></div>
-				</div>
-<!-- Koniec usuwania -->		
-				
-				
-                <hr>
+				<!--<div style="min-height: 40px; height: auto; border: 1px solid silver; text-align: left; padding: 6px;">-->
+					<!--<div class="col-md-8" style="padding:3px; font-weight: bold;">-->
+						<!--Tytuł czwartego posta-->
+					<!--</div>-->
+					<!--<div class="col-md-4">-->
+						<!--<button> &nbsp;Usuń&nbsp; <span class="glyphicon"></span></button>-->
+						<!--<button> &nbsp;Szczegóły&nbsp; <span class="glyphicon"></span></button>-->
+					<!--</div>-->
+					<!--<div style="height: 10px;"></div>-->
+				<!--</div>-->
+				<!---->
+				<!--<div style="min-height: 40px; height: auto; border: 1px solid silver; text-align: left; padding: 6px;">-->
+					<!--<div class="col-md-8" style="padding:3px; font-weight: bold;">-->
+						<!--Tytuł piątego posta-->
+					<!--</div>-->
+					<!--<div class="col-md-4">-->
+						<!--<button> &nbsp;Usuń&nbsp; <span class="glyphicon"></span></button>-->
+						<!--<button> &nbsp;Szczegóły&nbsp; <span class="glyphicon"></span></button>-->
+					<!--</div>-->
+					<!--<div style="height: 10px;"></div>-->
+				<!--</div>-->
+<!--&lt;!&ndash; Koniec usuwania &ndash;&gt;		-->
+				<!---->
+				<!---->
+                <!--<hr>-->
 
             </div>
 

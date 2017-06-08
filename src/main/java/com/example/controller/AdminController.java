@@ -1,44 +1,29 @@
 package com.example.controller;
 
-import com.example.dto.NewEntryDTO;
-import com.example.dto.ShowEntryDTO;
-import com.example.dto.UserDTO;
+import com.example.dto.*;
 import com.example.models.Entry;
 import com.example.models.User;
 import com.example.services.EntryService;
 import com.example.services.FileService;
 import com.example.services.UserService;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Properties;
-import java.util.TimeZone;
 
 /**
  * Created by Tomek on 03.06.2017.
@@ -49,7 +34,7 @@ import java.util.TimeZone;
 @PropertySource( value={"classpath:hobbies.properties"})
 public class AdminController {
 
-    private static final String pattern = "dd-MM-yyyy HH:mm";
+    private static final String pattern = "dd-MM-yyyy HH:mm:ss";
 
     @Autowired
     private Environment environment;
@@ -68,50 +53,48 @@ public class AdminController {
         if(request.getSession(false)==null)
             return new ModelAndView("redirect:/login");
         else {
-            ArrayList<ShowEntryDTO> entries = new ArrayList<>();
+            ArrayList<IntroEntryDTO> entries = new ArrayList<>();
             for(Entry entry: entryService.findEntries()) {
-                ShowEntryDTO entryDTO = new ShowEntryDTO();
+                IntroEntryDTO entryDTO = new IntroEntryDTO();
                 entryDTO.setId(entry.getId());
                 entryDTO.setTitle(entry.getTitle());
-                entryDTO.setText(entry.getText().substring(0,Math.min(entry.getText().length(), 120))+"...");
-                entryDTO.setCommentaries(entry.getCommentaries());
                 entryDTO.setDateTime(entry.getDateTime().toString(pattern));
-                entryDTO.setTags(entry.getTags());
+//                entryDTO.setCategory(entry.getCategory());
                 entries.add(entryDTO);
             }
             String[] hobbies = new String[]{"dyskusje", "film", "gotowanie", "gry", "historia",
                     "muzyka", "sport", "spotkania", "turystyka", "wolontariat"};
-            UserDTO dto = new UserDTO();
+//            UserDTO dto = new UserDTO();
             ModelAndView mav = new ModelAndView();
             mav.setViewName("admin");
-            mav.addObject("dto",dto);
-            mav.addObject("hobbiesList", hobbies);
+//            mav.addObject("dto",dto);
+//            mav.addObject("hobbiesList", hobbies);
             mav.addObject("entries", entries);
             return mav;
         }
     }
 
-    @RequestMapping(value="", method = RequestMethod.POST)
-    public ModelAndView adminChange(HttpServletRequest request,
-                                    @ModelAttribute("admin") @Valid UserDTO adminDTO,
-                                    BindingResult bindingResult) {
-        if (request.getSession(false) == null)
-            return new ModelAndView(("redirect:/login"));
-        else {
-            if (bindingResult.hasErrors()) {
-                System.out.println("nieprawidłowo");
-                String[] hobbies = new String[]{"dyskusje", "film", "gotowanie", "gry", "historia",
-                        "muzyka", "sport", "spotkania", "turystyka", "wolontariat"};
-                ModelAndView mav = new ModelAndView();
-                mav.setViewName("admin");
-                mav.addObject("dto", adminDTO);
-                mav.addObject("hobbiesList", hobbies);
-
-                return mav;
-            } else
-                return new ModelAndView("redirect:/");
-        }
-    }
+//    @RequestMapping(value="", method = RequestMethod.POST)
+//    public ModelAndView adminChange(HttpServletRequest request,
+//                                    @ModelAttribute("admin") @Valid UserDTO adminDTO,
+//                                    BindingResult bindingResult) {
+//        if (request.getSession(false) == null)
+//            return new ModelAndView(("redirect:/login"));
+//        else {
+//            if (bindingResult.hasErrors()) {
+//                System.out.println("nieprawidłowo");
+//                String[] hobbies = new String[]{"dyskusje", "film", "gotowanie", "gry", "historia",
+//                        "muzyka", "sport", "spotkania", "turystyka", "wolontariat"};
+//                ModelAndView mav = new ModelAndView();
+//                mav.setViewName("admin");
+//                mav.addObject("dto", adminDTO);
+//                mav.addObject("hobbiesList", hobbies);
+//
+//                return mav;
+//            } else
+//                return new ModelAndView("redirect:/");
+//        }
+//    }
 
     @RequestMapping("/delete/{id}")
     public ModelAndView deleteEntry(@PathVariable("id") String id, HttpServletRequest request) {
@@ -131,19 +114,23 @@ public class AdminController {
         else {
             System.out.println("edycja");
             Entry entry = entryService.findEntry(id);
-            ShowEntryDTO entryDTO = new ShowEntryDTO();
+            EditEntryDTO entryDTO = new EditEntryDTO();
             entryDTO.setId(entry.getId());
             entryDTO.setTitle(entry.getTitle());
             entryDTO.setText(entry.getText());
-            entryDTO.setCommentaries(entry.getCommentaries());
-            entryDTO.setDateTime(entry.getDateTime().toString(pattern));
-            entryDTO.setTags(entry.getTags());
+            entryDTO.setCategory(entry.getCategory());
 
             ArrayList<String> possibleTags = new ArrayList<>();
-            possibleTags.add("historia");
-            possibleTags.add("polityka");
-            possibleTags.add("kulinaria");
             possibleTags.add("sport");
+            possibleTags.add("historia");
+            possibleTags.add("zdrowie");
+            possibleTags.add("turystyka");
+            possibleTags.add("rozrywka");
+            possibleTags.add("IT");
+            possibleTags.add("prawo");
+            possibleTags.add("technologie");
+            possibleTags.add("motoryzacja");
+            possibleTags.add("książki");
 
             ModelAndView mav = new ModelAndView();
             mav.setViewName("edit");
@@ -154,16 +141,17 @@ public class AdminController {
     }
 
     @RequestMapping(value="/edit/{id}", method = RequestMethod.POST)
-    public ModelAndView confirmEditEntry(@PathVariable("id") String id, @ModelAttribute("dto") @Valid ShowEntryDTO dto, BindingResult bindingResult, HttpServletRequest request) {
+    public ModelAndView confirmEditEntry(@PathVariable("id") String id, @ModelAttribute("dto") @Valid EditEntryDTO dto,
+                                         BindingResult bindingResult, HttpServletRequest request) {
         if(request.getSession(false)==null)
             return new ModelAndView("redirect:/login");
         else {
             if(bindingResult.hasErrors()) {
                 ModelAndView toReturn = new ModelAndView();
                 System.out.println("NIE PRZESZLO WALIDACJI");
-                System.out.println(dto.getDateTime());
+//                System.out.println(dto.getDateTime());
                 System.out.println(dto.getId());
-                System.out.println(dto.getCommentaries());
+                System.out.println(dto.getCategory());
                 toReturn.setViewName("edit");
                 toReturn.addObject("dto", dto);
                 return toReturn;
@@ -172,10 +160,10 @@ public class AdminController {
             Entry entry = new Entry();
             entry.setTitle(dto.getTitle());
             entry.setText(dto.getText());
-            entry.setCommentaries(dto.getCommentaries());
-            entry.setTags(dto.getTags());
-            DateTimeFormatter formatter = DateTimeFormat.forPattern(pattern);
-            DateTime dt = formatter.parseDateTime(dto.getDateTime());
+            entry.setCommentaries(entryService.getCommentariesToEntry(dto.getId()));
+            entry.setCategory(dto.getCategory());
+//            DateTimeFormatter formatter = DateTimeFormat.forPattern(pattern);
+            DateTime dt = new DateTime();
             entry.setDateTime(dt);
 
             entryService.editEntry(id, entry);
@@ -185,48 +173,82 @@ public class AdminController {
     }
 
 
-    @RequestMapping(value="/new", method = RequestMethod.GET)
-    public ModelAndView addEntry(HttpServletRequest request) {
+    @RequestMapping(value="/new", method = RequestMethod.POST)
+    public ModelAndView addEntry(@ModelAttribute("dto") @Valid NewEntryDTO dto, HttpServletRequest request) {
         if(request.getSession(false)==null)
             return new ModelAndView("redirect:/login");
         else {
-            NewEntryDTO dto = new NewEntryDTO();
-            ArrayList<String> possibleTags = new ArrayList<>();
-            possibleTags.add("historia");
-            possibleTags.add("polityka");
-            possibleTags.add("kulinaria");
-            possibleTags.add("sport");
+            Entry newEntry = new Entry();
+            System.out.println("TITLE="+dto.getTitle());
+            System.out.println("TEXT="+dto.getText());
+            newEntry.setTitle(dto.getTitle());
+            newEntry.setText(dto.getText());
+            newEntry.setCategory(dto.getCategory());
+            System.out.println("Na razie chodzi wolno");
+            newEntry.setCommentaries(new ArrayList<>());
+            newEntry.setDateTime(new DateTime());
+            entryService.insertEntry(newEntry);
+            return new ModelAndView("redirect:/admin");
+        }
+    }
+
+
+    @RequestMapping(value="/new", method = RequestMethod.GET)
+    public ModelAndView prepareaddEntry(HttpServletRequest request) {
+        if(request.getSession(false)==null)
+            return new ModelAndView("redirect:/login");
+        else {
             ModelAndView mav = new ModelAndView();
             mav.setViewName("post");
-            mav.addObject("dto", dto);
+            NewEntryDTO newEntry = new NewEntryDTO();
+            System.out.println("TITLE="+newEntry.getTitle());
+            System.out.println("TEXT="+newEntry.getText());
+            mav.addObject("dto", newEntry);
+
+            ArrayList<String> possibleTags = new ArrayList<>();
+            possibleTags.add("historia");
+            possibleTags.add("IT");
+            possibleTags.add("książki");
+            possibleTags.add("motoryzacja");
+            possibleTags.add("prawo");
+            possibleTags.add("rozrywka");
+            possibleTags.add("sport");
+            possibleTags.add("technologie");
+            possibleTags.add("turystyka");
+            possibleTags.add("zdrowie");
+            possibleTags.add("inne");
             mav.addObject("possibleTags", possibleTags);
+
+//            newEntry.setCommentaries(new ArrayList<>());
+//            newEntry.setDateTime(new DateTime());
+//            entryService.insertEntry(newEntry);
             return mav;
         }
     }
 
-    @RequestMapping(value="/new", method = RequestMethod.POST)
-    public ModelAndView addNewEntry(HttpServletRequest request,
-                                    @ModelAttribute("dto") @Valid NewEntryDTO entryDTO,
-                                    BindingResult bindingResult) {
-        if(request.getSession(false)==null)
-            return new ModelAndView("redirect:/login");
-        else {
-            if(bindingResult.hasErrors())
-                return new ModelAndView("post");
-            else {
-                Entry newEntry = new Entry();
-                System.out.println("TITLE="+entryDTO.getTitle());
-                System.out.println("TEXT="+entryDTO.getText());
-                newEntry.setTitle(entryDTO.getTitle());
-                newEntry.setText(entryDTO.getText());
-                newEntry.setTags(entryDTO.getTags());
-                newEntry.setCommentaries(new ArrayList<>());
-                newEntry.setDateTime(new DateTime());
-                entryService.insertEntry(newEntry);
-                return new ModelAndView("redirect:/admin");
-            }
-        }
-    }
+//    @RequestMapping(value="/new", method = RequestMethod.POST)
+//    public ModelAndView addNewEntry(HttpServletRequest request,
+//                                    @ModelAttribute("dto") @Valid NewEntryDTO entryDTO,
+//                                    BindingResult bindingResult) {
+//        if(request.getSession(false)==null)
+//            return new ModelAndView("redirect:/login");
+//        else {
+//            if(bindingResult.hasErrors())
+//                return new ModelAndView("post");
+//            else {
+//                Entry newEntry = new Entry();
+//                System.out.println("TITLE="+entryDTO.getTitle());
+//                System.out.println("TEXT="+entryDTO.getText());
+//                newEntry.setTitle(entryDTO.getTitle());
+//                newEntry.setText(entryDTO.getText());
+//                newEntry.setCategory(entryDTO.getCategory());
+//                newEntry.setCommentaries(new ArrayList<>());
+//                newEntry.setDateTime(new DateTime());
+//                entryService.insertEntry(newEntry);
+//                return new ModelAndView("redirect:/admin");
+//            }
+//        }
+//    }
 //    @RequestMapping("/edit")
 //    public ModelAndView adminEditView(HttpServletRequest request, Model model) {
 //        if(request.getSession(false)==null)
@@ -278,6 +300,15 @@ public class AdminController {
         request.getSession().invalidate();
         return "redirect:/";
     }
+
+//    @RequestMapping(value="/entries", method = RequestMethod.POST)
+//    public @ResponseBody ArrayList<Entry> getShopInJSON(@RequestBody SearchCriteria search) {
+//
+//        ArrayList<Entry> entries = entryService.findEntries();
+//        System.out.println(search.getUsername());
+//        System.out.println(search.getEmail());
+//        return entries;
+//    }
 
     /**
      * Upload single file using Spring Controller

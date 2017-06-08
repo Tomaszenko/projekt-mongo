@@ -11,16 +11,16 @@
     <title>Blog</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="css/blog-home.css" rel="stylesheet">
+    <link href="/static/css/blog-home.css" rel="stylesheet">
 	
 	    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
+    <script src="/static/js/jquery.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -35,65 +35,103 @@
 
   <!-- Page Content -->
     <div class="container">
-	
-        <div class="row">
 
-            <div class="col-md-9">
-				<div style="height: 20px;"></div>
-				<img class="img-responsive" src="/static/images/logo.png" style="float: left;" alt="">
-				<div style="height: 150px;"></div>
-			</div>
+        <div class="col-md-9">
+            <!--<a href="/admin/logout" th:text="Wyloguj"></a>-->
+            <!--<a href="/admin/" th:text="Powrót"></a>-->
+            <a class="btn btn-primary" style="float: right;" href="/admin/logout">Wyloguj</a>
+            <a class="btn btn-primary" style="float: right; margin-right: 5px;" href="/admin/">Wróć</a>
+        </div>
+
+        <div class="row">
+        <div class="col-md-9">
+            <div style="height: 20px;"></div>
+            <img class="img-responsive" src="/static/images/logo.png" style="float: left;" alt="">
+            <div style="height: 150px;"></div>
+        </div>
+
+        <div class="col-md-9">
+
+            <form action="#" th:action="@{/admin/edit/{id}(id=${dto.getId()})}" th:object="${dto}" method="post" enctype="multipart/form-data">
+                <label for="title" th:text="Tytuł"></label><br/>
+                <input class="form-control" placeholder="Tytuł" type="text" id="title" name="title" th:value="*{title}" th:field="*{title}"/><br/>
+                <label for="text" th:text="Tekst"></label><br/>
+                <textarea class="form-control" placeholder="Tekst" cols="100" rows="10" id="text" name="text" th:value="*{text}" th:text="*{text}" th:field="*{text}"></textarea><br/>
+                <label for="category" th:text="Kategoria"></label><br/>
+                <select class="form-control" id="category" name="category" th:field="*{category}">
+                    <option th:each="tag:${possibleTags}"
+                            th:value="${tag}"
+                            th:text="${tag}"
+                            th:field="*{category}"
+                            th:selected="${dto.category}==${tag}"></option>
+                </select>
+                <!--<input placeholder="Last nam" type="text" th:field="*{text}"/><br/>-->
+                <!--<input placeholder="About me" type="text" th:field="*{description}"/><br/>-->
+                <!--Hobby:<br/>-->
+                <!--<th:block th:each="item : ${hobbiesList}">-->
+                <!--<td th:text="${item}"></td>-->
+                <!--<input type="checkbox" name="hobbies" th:value="|${item}|" th:field="*{hobbies}" /><br/>-->
+                <!--</th:block>-->
+                <!--&lt;!&ndash;Plik ze zdjęciem:<input type="file" accept="image/*" th:field="*{image}"/><br/>&ndash;&gt;-->
+                <!--<input placeholder="Kontakt" type="text" th:field="*{contact}"/><br/>-->
+                <input type="submit" value="Zatwierdź">
+            </form>
+        </div>
+
+
 			
 			<!-- Szczegóły wpisu -->
-            <div class="col-md-9">
+            <!--<div class="col-md-9">-->
 
-                <hr>
-				<form th:action="@{/admin/edit/{id}(id=*{id})}" th:object="${dto}" th:method="post">
-				
-				<div class="col-md-12" style="padding:3px; font-weight: bold;">
-                    <input type="hidden" name="id" th:value="*{id}" th:field="*{id}"/>
+                <!--<hr>-->
+				<!--<form th:action="@{/admin/edit/{id}(id=*{id})}" th:object="${dto}" th:method="post">-->
+				<!---->
+				<!--<div class="col-md-12" style="padding:3px; font-weight: bold;">-->
+                    <!--<input type="hidden" name="id" th:value="*{id}" th:field="*{id}"/>-->
                     <!--<span class="wpcf7-form-control-wrap Attachments">-->
 					<!--<label style="float: left;" for="Attachments">Zdjęcie: &nbsp;&nbsp;&nbsp;&nbsp;</label>-->
 					<!--<input type="file" name="Attachments" size="40" class="wpcf7-form-control wpcf7-file" aria-invalid="false" multiple="1">-->
 				<!--</span>-->
 				
-				<div style="height: 25px;"></div>
-					
-					<label for="title">Tytuł wpisu:&nbsp;&nbsp;</label>
-					<input type="text" style="width: 100%" id="title" name="title" th:value="*{title}" th:field="*{title}">
-					
-				<div style="height: 25px;"></div>
-					
-					<label for="text">Wpis:&nbsp;&nbsp;</label>
-					<textarea type="text" id="text" style="max-width: 100%; width: 100%; min-height: 100px;" name="text" th:text="*{text}" th:field="*{text}"></textarea>
-					
-				<div style="height: 25px;"></div>
+				<!--<div style="height: 25px;"></div>-->
+					<!---->
+					<!--<label for="title">Tytuł wpisu:&nbsp;&nbsp;</label>-->
+					<!--<input type="text" style="width: 100%" id="title" name="title" th:value="*{title}" th:field="*{title}">-->
+					<!---->
+				<!--<div style="height: 25px;"></div>-->
+					<!---->
+					<!--<label for="text">Wpis:&nbsp;&nbsp;</label>-->
+					<!--<textarea type="text" id="text" style="max-width: 100%; width: 100%; min-height: 100px;" name="text" th:text="*{text}" th:field="*{text}"></textarea>-->
+					<!---->
+				<!--<div style="height: 25px;"></div>-->
+
+                    <!--<ul id="category" name="category" th:field="*{category}" style="width: 100%; height: 25px;">-->
+                    <!--<label for="text">Tagi:&nbsp;&nbsp;</label>-->
+                    <!--<select th:field="*{category}">-->
+                        <!--<option th:each="category: ${possibleTags}" th:text="${category}" th:value="${category}"></option>-->
+                    <!--</select>-->
+                    <!--</ul>-->
+                    <!--<select class="form-control" id="category" name="category" th:field="*{category}" multiple="multiple" style="width: 100%; height: 25px;">-->
+                        <!--<option th:each="tag : *{category}"-->
+                                <!--th:value="${tag}"-->
+                                <!--th:text="${tag}"></option>-->
+                    <!--</select>-->
+
+				<!--<div style="height: 30px;"></div>-->
 				
-					<label for="tags">Tagi:&nbsp;&nbsp;</label>
+				<!--<center>-->
+				<!--<input type="submit" value=" Zapisz ">&nbsp;&nbsp;-->
+				<!--<input type="reset" value=" Anuluj ">-->
+				<!--</center>-->
+				<!---->
+				<!--</div>-->
 
-                    <select class="form-control" id="tags" name="tags" th:field="*{tags}" multiple="multiple" style="width: 100%; height: 25px;">
-                        <option th:each="tag : ${possibleTags}"
-                                th:value="${tag}"
-                                th:text="${tag}"></option>
-                    </select>
+				<!--<div style="height: 10px;"></div>-->
 
-                    <input type="hidden" th:hidden="" name="dateTime" th:value="*{dateTime}" th:field="*{dateTime}"/>
-                    <input type="hidden" name="commentaries" th:value="*{commentaries}" th:field="*{commentaries}"/>
-				<div style="height: 30px;"></div>
-				
-				<center>
-				<input type="submit" value=" Zapisz ">&nbsp;&nbsp;
-				<input type="reset" value=" Anuluj ">
-				</center>
-				
-				</div>
-
-				<div style="height: 10px;"></div>
-
-                </form>
+                <!--</form>-->
 
 
-            </div>
+            <!--</div>-->
 
 							
             <!-- Blog Sidebar Widgets Column -->
@@ -116,8 +154,6 @@
 
 
             </div>
-
-        </div>
         <!-- /.row -->
 
         <!-- Footer -->
@@ -135,6 +171,7 @@
         </footer>
 
     </div>
+</div>
     <!-- /.container -->
 
 </body>

@@ -18,7 +18,7 @@ public class Entry {
     private DateTime dateTime;
     private String title;
     private String text;
-    private ArrayList<String> tags;
+    private String category;
     private ArrayList<Commentary> commentaries;
 
     public String getId() {
@@ -53,12 +53,12 @@ public class Entry {
         this.text = text;
     }
 
-    public ArrayList<String> getTags() {
-        return tags;
+    public String getCategory() {
+        return category;
     }
 
-    public void setTags(ArrayList<String> tags) {
-        this.tags = tags;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public ArrayList<Commentary> getCommentaries() {

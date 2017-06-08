@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<html lang="pl" xmlns:th="http://www.thymeleaf.org" xmlns:display="http://www.w3.org/1999/xhtml">
 <head>
 
     <meta charset="utf-8">
@@ -21,6 +21,8 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="/static/js/bootstrap.min.js"></script>
+
+    <script src="/static/js/script.js"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -56,8 +58,16 @@
                     <hr>
                     <img class="img-responsive" src="/static/images/book.jpg" alt="">
                     <hr>
-                    <p th:text="${entry.text}"></p>
-                    <a class="btn btn-primary" href="#">Czytaj więcej<span class="glyphicon glyphicon-chevron-right"></span></a>
+
+                    <div style="display: block">
+                        <span th:text="${entry.intro || '...'}"></span>
+                    </div>
+
+                    <div style="display: none">
+                        <span th:text="${entry.text}"></span>
+                    </div>
+
+                    <a class="btn btn-primary switcher" href="#">Czytaj więcej<span class="glyphicon glyphicon-chevron-right"></span></a>
 
                     <hr>
                 </div>
@@ -89,7 +99,7 @@
                     <div class="input-group">
                         <input type="text" class="form-control">
                         <span class="input-group-btn">
-                            <button class="btn btn-default" type="button">
+                            <button id="search-form" class="btn btn-default" type="button">
                                 <span class="glyphicon glyphicon-search"></span>
                         </button>
                         </span>
