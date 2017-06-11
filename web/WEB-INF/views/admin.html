@@ -41,7 +41,13 @@
 
   <!-- Page Content -->
     <div class="container">
-		<a href="/admin/logout">Wyloguj</a>
+        <div class="col-md-9">
+            <!--<a href="/admin/logout" th:text="Wyloguj"></a>-->
+            <!--<a href="/admin/" th:text="Powrót"></a>-->
+            <a class="btn btn-primary" style="float: right;" href="/admin/logout">Wyloguj</a>
+            <!--<a class="btn btn-primary" style="float: right; margin-right: 5px;" href="/admin/">Wróć</a>-->
+        </div>
+		<!--<a href="/admin/logout">Wyloguj</a>-->
         <!--<div></div>-->
 
 		<!--<form action="#" th:action="@{/admin}" th:object="${dto}" method="post" enctype="multipart/form-data">-->
@@ -100,7 +106,7 @@
             <div class="col-md-9">
 
                 <hr>
-                <a th:href="@{/admin/new}"> &nbsp;Dodaj wpis&nbsp; <span class="glyphicon"></span></a>
+                <a class="btn btn-primary" th:href="@{/admin/new}"> &nbsp;Dodaj wpis&nbsp; <span class="glyphicon"></span></a>
 				<!--<button id="do-add">Dodaj post</button>-->
 
 				<!--<a th:href="@{/admin/new}"> &nbsp;Dodaj nowy wpis&nbsp; <span class="glyphicon"></span></a>-->

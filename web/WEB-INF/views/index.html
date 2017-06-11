@@ -24,6 +24,8 @@
 
     <script src="/static/js/script.js"></script>
 
+    <script src="/static/js/startedit.js"></script>
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -43,7 +45,7 @@
 
             <div class="col-md-8">
 				<div style="height: 20px;"></div>
-				<img class="img-responsive" src="/static/images/logo.png" style="float: left;" alt="">
+				<a href="/"><img class="img-responsive" src="/static/images/logo.png" style="float: left;" alt=""></a>
 				<div style="height: 150px;"></div>
 			</div>
 			
@@ -51,23 +53,37 @@
             <div class="col-md-8">
 
                 <!-- First Blog Post -->
-                <div th:each="entry: ${entries}">
+                <div class="entry" th:each="entry: ${entries}">
                     <h2 th:text="${entry.title}">
                     </h2>
                     <p><span th:text="${entry.dateTime}" class="glyphicon glyphicon-time"></span></p>
+                    <p><span th:text="${entry.category}" class="glyphicon"></span></p>
                     <hr>
                     <img class="img-responsive" src="/static/images/book.jpg" alt="">
                     <hr>
 
-                    <div style="display: block">
+                    <div class="my-intro" style="display: block">
                         <span th:text="${entry.intro || '...'}"></span>
                     </div>
 
-                    <div style="display: none">
+                    <div class="my-full" style="display: none">
                         <span th:text="${entry.text}"></span>
+                        <div style="padding-top: 10px;">
+                            <h5 style="font-weight: bold">Komentarze</h5>
+                            <div class="comment" style="border-top: 1px solid" th:each="comment: ${entry.getCommentaries()}">
+                                <p th:text="'Treść: '+${comment.getText()}"></p>
+                                <p th:text="'Data: '+${comment.getDateTime()}"></p>
+                                <p th:text="'Nick: '+${comment.getNick()}"></p>
+                            </div>
+                        </div>
+                        <div>
+                            <textarea class="text form-control" placeholder="Tekst komenarza"></textarea>
+                            <input class="nick form-control" type="text" placeholder="Twój nick"/>
+                            <button th:attr="entid=${entry.getId()}" class="submit-comment">Dodaj komentarz</button>
+                        </div>
                     </div>
 
-                    <a class="btn btn-primary switcher" href="#">Czytaj więcej<span class="glyphicon glyphicon-chevron-right"></span></a>
+                    <a class="btn btn-primary switcher">Czytaj więcej<span class="glyphicon glyphicon-chevron-right"></span></a>
 
                     <hr>
                 </div>
@@ -84,13 +100,13 @@
             </div>
 
             <!-- Blog Sidebar Widgets Column -->
-            <div class="col-md-4">
+            <div class="col-md-4 pull-right">
 
 				<!-- Side Widget Well -->
                 <div class="well">
                     <h4>O mnie</h4>
-					<center><img class="img-responsive" src="/static/images/img.png" alt=""></center><br />
-                    <p>Nazywam się Jan Kowalski. Jestem autorem tego bloga. Wkrótce znajdziesz tu więcej informacji o mojej skromnej osobie :) </p>
+					<center><img class="img-responsive" src="/static/images/ja.png" alt=""></center><br />
+                    <p>Cześć! Nazywam się Kamila, lat mam 19 lat. Odkąd tylko pamiętam jestem zafascynowana otaczającym mnie światem. Dlatego też postanowiłam podzielić się tym z Tobą. Interesuję się wieloma dziedzinami, więc z pewnością znajdziesz tutaj coś dla siebie :) </p>
                 </div>
 				
 				<!-- Blog Search Well -->
@@ -111,41 +127,35 @@
                 <div class="well">
                     <h4>Kategorie</h4>
                     <div class="row">
-                        <div class="col-lg-6">
-                            <ul class="list-unstyled">
-                                <li><a href="#">Sport</a>
-                                </li>
-                                <li><a href="#">IT</a>
-                                </li>
-                                <li><a href="#">Gry</a>
-                                </li>
-                                <li><a href="#">Muzyka</a>
-                                </li>
-                            </ul>
-                        </div>
+                        <!--<div class="col-lg-6">-->
+                            <!--<ul class="list-unstyled">-->
+                                <!--<li><a href="#">Sport</a>-->
+                                <!--</li>-->
+                                <!--<li><a href="#">IT</a>-->
+                                <!--</li>-->
+                                <!--<li><a href="#">Gry</a>-->
+                                <!--</li>-->
+                                <!--<li><a href="#">Muzyka</a>-->
+                                <!--</li>-->
+                            <!--</ul>-->
+                        <!--</div>-->
                         <!-- /.col-lg-6 -->
-                        <div class="col-lg-6">
-                            <ul class="list-unstyled">
-                                <li><a href="#">Podróże</a>
-                                </li>
-                                <li><a href="#">Filmy</a>
-                                </li>
-                                <li><a href="#">Książki</a>
-                                </li>
-                                <li><a href="#">Inne</a>
+                        <div class="col-lg-12">
+                            <ul th:each="category: ${categories}" class="list-unstyled">
+                                <li><a th:href="@{/kategoria/{nazwa}(nazwa=${category})}" th:text="${category}"></a>
                                 </li>
                             </ul>
                         </div>
                         <!-- /.col-lg-6 -->
                     </div>
-                    <!-- /.row -->
+                     <!--/.row -->
                 </div>
 				
                 <!-- Blog Archiwum Well -->
                 <div class="well">
                     <h4>Archiwum</h4>
                     <div class="row">
-                        <div class="col-lg-6">
+                        <div class="col-lg-12">
                             <ul class="list-unstyled">
                                 <li><a href="#">Maj 2017</a>
                                 </li>

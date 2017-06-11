@@ -65,4 +65,24 @@ public class EntryRepositoryImpl implements MyCustomEntryRepository {
         Query q = new Query().with(new Sort(Sort.Direction.DESC, "dateTime"));
         return new ArrayList<>(operations.find(q, Entry.class));
     }
+
+    public ArrayList<Entry> findEntriesFromNewestToCategory(String category) {
+        Query q = new Query();
+        q.addCriteria(Criteria.where("category").is(category));
+        q.with(new Sort(Sort.Direction.DESC, "dateTime"));
+        return new ArrayList<>(operations.find(q, Entry.class));
+    }
+
+    public ArrayList<String> findAllCategories() {
+        ArrayList<String> categories = new ArrayList<String>(operations.getCollection("entries").distinct("category"));
+        return categories;
+    }
+
+    public void addCommentToEntry(Commentary commentary, String entryId) {
+        Query query= new Query();
+        query.addCriteria(Criteria.where("id").is(entryId));
+        Update update = new Update();
+        update.push("commentaries", commentary);
+        operations.updateFirst(query, update, Entry.class);
+    }
 }

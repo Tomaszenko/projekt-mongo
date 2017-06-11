@@ -1,13 +1,14 @@
 $(function(){
     let state = 0;
-    $('.switcher').each().on('click', function(){
-        event.preventDefault();
+    $(".switcher").on("click", function(){
         if(state===0) {
-            $(this).siblings('.intro')[0].css('display', 'none');
-            $(this).siblings('.full')[0].css('display', 'block');
+            $(this).closest(".entry").find(".my-intro").css("display", "none");
+            $(this).closest(".entry").find(".my-full").css("display", "block");
+            $(this).text("Schowaj");
         } else {
-            $(this).siblings('.intro')[0].css('display', 'block');
-            $(this).siblings('.full')[0].css('display', 'none');
+            $(this).closest(".entry").find(".my-intro").css("display", "block");
+            $(this).closest(".entry").find(".my-full").css("display", "none");
+            $(this).text("Czytaj więcej");
         }
         state = (state+1)%2;
         console.log(state);

@@ -18,6 +18,9 @@ public interface EntryService {
     void deleteEntry(String entryId);
     ArrayList<Commentary> getCommentariesToEntry(String entryId);
     DateTime getDateTimeToEntry(String entryId);
+    ArrayList<String> findCategories();
+    ArrayList<Entry> findEntriesToCategory(String category);
+    void addCommentToEntry(Commentary commentary, String entryId);
 //    ArrayList<Entry> findEntriesByTags(Optional<ArrayList<String>> tags);
 //    ArrayList<Entry> findEntriesByDate(Optional<DateTime> startTime, Optional<DateTime> endTime);
 }

@@ -15,7 +15,7 @@ public class FullEntryDTO {
     private String intro;
     private String text;
     private String category;
-    private ArrayList<Commentary> commentaries;
+    private ArrayList<FullCommentaryDTO> commentaries;
     private String dateTime;
 
     public String getId() {
@@ -58,11 +58,11 @@ public class FullEntryDTO {
         this.category = category;
     }
 
-    public ArrayList<Commentary> getCommentaries() {
+    public ArrayList<FullCommentaryDTO> getCommentaries() {
         return commentaries;
     }
 
-    public void setCommentaries(ArrayList<Commentary> commentaries) {
+    public void setCommentaries(ArrayList<FullCommentaryDTO> commentaries) {
         this.commentaries = commentaries;
     }
 

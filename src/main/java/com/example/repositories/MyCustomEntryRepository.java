@@ -15,4 +15,7 @@ public interface MyCustomEntryRepository {
     ArrayList<Commentary> getCommentariesToEntry(String entryId);
     DateTime getDateTimeToEntry(String entryId);
     ArrayList<Entry> findEntriesFromNewest();
+    ArrayList<String> findAllCategories();
+    ArrayList<Entry> findEntriesFromNewestToCategory(String category);
+    void addCommentToEntry(Commentary commentary, String entryId);
 }

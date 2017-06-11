@@ -28,12 +28,14 @@ class LoginController {
     }
 
     @RequestMapping(value="", method = RequestMethod.GET)
-    public String displayRequestPage(Model model) {
+    public String displayRequestPage(HttpServletRequest request, Model model) {
+        request.getSession().invalidate();
         return "login";
     }
 
     @RequestMapping(value="", method = RequestMethod.POST)
-    public ModelAndView logging(@RequestParam("username") String username, @RequestParam("password") String password,
+    public ModelAndView logging(@RequestParam("username") String username,
+                                @RequestParam("password") String password,
                                 HttpServletRequest request, HttpServletResponse response) {
 //        String pass = "secret-pass";
         if(userService.exists(username,password)) {

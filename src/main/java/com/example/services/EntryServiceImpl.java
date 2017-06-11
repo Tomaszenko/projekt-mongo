@@ -32,6 +32,16 @@ public class EntryServiceImpl implements EntryService {
         return entryRepository.findEntriesFromNewest();
     }
 
+    @Override
+    public ArrayList<String> findCategories() {
+        return entryRepository.findAllCategories();
+    }
+
+    @Override
+    public ArrayList<Entry> findEntriesToCategory(String category) {
+        return entryRepository.findEntriesFromNewestToCategory(category);
+    }
+
     public void deleteEntry(String entryId) {
         entryRepository.delete(entryId);
     }
@@ -45,4 +55,8 @@ public class EntryServiceImpl implements EntryService {
         return entryRepository.getDateTimeToEntry(entryId);
     }
 
+    @Override
+    public void addCommentToEntry(Commentary commentary, String entryId) {
+        entryRepository.addCommentToEntry(commentary, entryId);
+    }
 }

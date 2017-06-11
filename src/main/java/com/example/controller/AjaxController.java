@@ -1,6 +1,8 @@
 package com.example.controller;
 
+import com.example.dto.CommentaryDTO;
 import com.example.dto.NewEntryDTO;
+import com.example.models.Commentary;
 import com.example.models.Entry;
 import com.example.services.EntryService;
 import org.joda.time.DateTime;
@@ -61,5 +63,16 @@ public class AjaxController {
             entryService.insertEntry(entry);
             System.out.println("kukulele");
         }
+    }
+
+    @RequestMapping(value="/komentarz/{id_wpisu}", method=RequestMethod.POST)
+    public boolean sendComment(@PathVariable("id_wpisu") String entryId,
+                               @RequestBody CommentaryDTO dto) {
+            Commentary commentary = new Commentary();
+            commentary.setText(dto.getText());
+            commentary.setNick(dto.getNick());
+            commentary.setDateTime(new DateTime());
+            entryService.addCommentToEntry(commentary, entryId);
+            return true;
     }
 }
